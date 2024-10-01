@@ -2,25 +2,25 @@
 
 ## Level 1 - Navigating the Digital Labyrinth
 
-![Challenge Description](level-1/description.png)
+![Challenge Description](Level-1/description.png)
 
 This is an OSINT challenge. We are given the username `vi_vox223`.
 
 I used the search engine DuckDuckGo and quickly found the Instagram account.
 
-![Search Result](level-1/search.png)
+![Search Result](Level-1/search.png)
 
 I also checked the account, noting that it had only been recently created and was based in Singapore, which confirmed my suspicion that this account was made solely for the purpose of this CTF.
 
-![Instagram Profile](level-1/instagram.png)
+![Instagram Profile](Level-1/instagram.png)
 
 From the Instagram story titled `Discord`, I found three suspicious posts, as shown below:
 
-![Post 1](level-1/post1.png)
+![Post 1](Level-1/post1.png)
 
-![Post 2](level-1/post2.png)
+![Post 2](Level-1/post2.png)
 
-![Post 3](level-1/post3.png)
+![Post 3](Level-1/post3.png)
 
 Essentially, we need to add the Discord bot and change our role to `D0PP3L64N63R`.
 
@@ -30,11 +30,11 @@ I added both bots to see if there was any difference in their responses, but app
 
 Here is how the bots responded when I didn’t have a role:
 
-![Without the role](level-1/no_role.png)
+![Without the role](Level-1/no_role.png)
 
 After adding the role, this is how the bot responded:
 
-![With the role](level-1/role.png)
+![With the role](Level-1/role.png)
 
 I first used the command `!list` to see all the files. After going through them, the only suspicious file was `Update_030624.eml`.
 
@@ -76,27 +76,27 @@ By searching on Google Maps, it was easy to identify the location as `Quercia se
 
 However, visiting the LinkedIn link only led to a profile that didn’t accept messages. Looking through the posts, I found another link to a Telegram bot in one of the posts, as shown below:
 
-![Linkedin Post](level-1/linkedin.png)
+![Linkedin Post](Level-1/linkedin.png)
 
 By visiting the Telegram bot and sending in the location, the flag was released, as shown below:
 
-![Telegram bot](level-1/telegram.png)
+![Telegram bot](Level-1/telegram.png)
 
 So, the flag is TISC{OS1N7_Cyb3r_InV35t1g4t0r_uAhf3n}.
 
 ## Level 2 - Language, Labyrinth and (Graphics)Magick
 
-![Challenge Description](level-2/description.png)
+![Challenge Description](Level-2/description.png)
 
 This is an interesting challenge. I would say it is about command injection and remote execution.
 
 It has links to the webpage.
 
-![Website](level-2/website.png)
+![Website](Level-2/website.png)
 
 I realised that I can input natural language into the textbox, and it will generate some instructions to be executed on the server side. It will return the image with a link to `hash.txt`. It looks like this:
 
-![hashtext](level-2/hashtext.png)
+![hashtext](Level-2/hashtext.png)
 
 For example, if I submit an image, the link will lead me to `http://chals.tisc24.ctf.sg:36183/tmp/53e6c466c509f9d7bf2530b55a12e3d3.txt`. This led me to think about path traversal.
 
@@ -108,31 +108,31 @@ So, I decided to experiment with running two commands and see the output.
 
 I tried to run `pwd` and have the output redirected into a file in `tmp` as follows:
 
-![pwd](level-2/pwd.jpg)
+![pwd](Level-2/pwd.jpg)
 
 And I could navigate to the link `http://chals.tisc24.ctf.sg:36183/tmp/new.txt`.
 
-![new](level-2/newtxt.jpg)
+![new](Level-2/newtxt.jpg)
 
 This is exciting because we know that the command runs in `app`, which is a different directory from `tmp`.
 
 So, I tried to run `ls` as follows:
 
-![ls](level-2/ls.jpg)
+![ls](Level-2/ls.jpg)
 
 And I could navigate to the link `http://chals.tisc24.ctf.sg:36183/tmp/try.txt`.
 
-![try](level-2/try.jpg)
+![try](Level-2/try.jpg)
 
 This way, I found the `flag.txt`, which is probably the goal.
 
 So, I crafted my payload as follows:
 
-![payload](level-2/payload.png)
+![payload](Level-2/payload.png)
 
 And I got the flag.
 
-![flag](level-2/flag.png)
+![flag](Level-2/flag.png)
 
 So, the flag is `TISC{h3re_1$_yOuR_prOc3s5eD_im4g3_&mORe}`.
 
@@ -140,17 +140,17 @@ So, the flag is `TISC{h3re_1$_yOuR_prOc3s5eD_im4g3_&mORe}`.
 
 This is a forensics challenge. I used the FTK Imager, which you can download [here](https://www.exterro.com/digital-forensics-software/ftk-imager).
 
-![challenge](level-3/description.png)
+![challenge](Level-3/description.png)
 
 I first searched for the string `flag` and found that there were some linked files to the path `Documents and Settings\csitfanl\Desktop\flag.txt`, but the file didn't exist.
 
-![link](level-3/link.png)
+![link](Level-3/link.png)
 
 By looking at the history, it seemed like there was a file called `flag.sus`.
 
 While I was searching through all the folders, I found a group of entries that seemed suspicious.
 
-![entries](level-3/entries.jpg)
+![entries](Level-3/entries.jpg)
 
 I exported the folder `entries` and ran a search using Windows commands.
 
@@ -174,15 +174,15 @@ Using CyberChef or this link `https://gchq.github.io/CyberChef/#recipe=From_Base
 
 This is a Web and Reverse Engineering Challenge.
 
-![challenge](level-4/description.png)
+![challenge](Level-4/description.png)
 
 The challenge links to a website, which is a checker.
 
-![website](level-4/checker.png)
+![website](Level-4/checker.png)
 
 I tried to use Burp Suite to see how the request was being sent but realized that it would alert "invalid card" without sending any request, which means that the algorithm for the check is done on the client side.
 
-![check](level-4/check.jpg)
+![check](Level-4/check.jpg)
 
 I saved the page, and you can see it in the folder.
 
