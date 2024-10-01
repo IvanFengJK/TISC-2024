@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://agpay.chals.tisc24.ctf.sg/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>AlligatorPay Balance Checker</title>
+    <link rel="stylesheet" href="./AlligatorPay Balance Checker_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./AlligatorPay Balance Checker_files/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./AlligatorPay Balance Checker_files/css2" rel="stylesheet">
+    <link href="./AlligatorPay Balance Checker_files/css2(1)" rel="stylesheet">
+    <link href="./AlligatorPay Balance Checker_files/css2(2)" rel="stylesheet">
+    <script src="./AlligatorPay Balance Checker_files/spark-md5.min.js"></script>
+    <style>
+      body {
+        background-color: #fdc71c;
+        color: #ffffff;
+        font-family: "Arial", sans-serif;
+      }
+
+      .container {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .title {
+        font-family: "Concert One", sans-serif;
+        font-weight: 400;
+        font-size: 150px;
+        font-style: normal;
+      }
+
+      .card-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 75px;
+        perspective: 1000px;
+      }
+
+      .card {
+        background: linear-gradient(145deg, #147bbd, #0467a6);
+        border-radius: 15px;
+        padding: 20px;
+        width: 600px;
+        height: 400px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5),
+          inset 0 0 10px rgba(255, 255, 255, 0.6);
+        position: relative;
+        margin-bottom: 20px;
+        overflow: hidden;
+        transform: rotateY(0deg);
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+      }
+
+      .card:hover {
+        transform: rotateY(20deg);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7),
+          inset 0 0 20px rgba(255, 255, 255, 0.7);
+      }
+
+      .card-header {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 2rem;
+        font-weight: bold;
+        color: silver;
+        text-shadow: 2px 2px 4px #000;
+      }
+
+      .chip {
+        position: absolute;
+        top: 100px;
+        left: 20px;
+        width: 60px;
+        height: 50px;
+        background: gold;
+        border-radius: 5px;
+      }
+
+      .overlay-chip {
+        position: absolute;
+        top: 97px;
+        left: 15px;
+        width: 12.5%;
+      }
+
+      .overlay-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 1;
+        z-index: -1;
+      }
+
+      .overlay-moostercard {
+        position: absolute;
+        top: 250px;
+        left: 30px;
+        width: 25%;
+        height: auto;
+        opacity: 1;
+        z-index: -2;
+      }
+
+      .overlay-agpay {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        width: 25%;
+        height: auto;
+        opacity: 1;
+        z-index: -2;
+      }
+
+      .card-number {
+        position: absolute;
+        top: 200px;
+        left: 20px;
+        right: 20px;
+        text-align: center;
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+        font-family: "Kode Mono", monospace;
+        color: silver;
+        text-shadow: 2px 2px 4px #000;
+        z-index: 2;
+      }
+
+      .card-expiry {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        font-size: 1.5rem;
+        color: silver;
+        text-shadow: 2px 2px 4px #000;
+        z-index: 2;
+        font-family: "Kode Mono", monospace;
+      }
+
+      .balance-display {
+        color: #0a0908;
+        font-size: 6rem;
+        text-align: center;
+        margin-top: 20px;
+        font-family: "Kode Mono", sans-serif;
+        font-weight: 900;
+        font-style: normal;
+        letter-spacing: 5px;
+        text-shadow: 0 0 1px hwb(46 0% 0%), 0 0 2px hwb(46 0% 0%),
+          0 0 3px hwb(46 0% 0%), 0 0 4px hwb(46 0% 0%), 0 0 5px hwb(46 0% 0%),
+          0 0 6px hwb(46 0% 0%), 0 0 7px hwb(46 0% 0%), 0 0 8px hwb(46 0% 0%),
+          0 0 9px hwb(46 0% 0%), 0 0 10px hwb(46 0% 0%), 0 0 11px hwb(46 0% 0%),
+          0 0 12px hwb(46 0% 0%), 0 0 13px hwb(46 0% 0%), 0 0 14px hwb(46 0% 0%),
+          0 0 15px hwb(46 0% 0%);
+      }
+
+      .dark-mode {
+        background-color: #fdc71c;
+        color: #0a0908;
+      }
+
+      .dark-mode .card {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5),
+          inset 0 0 10px rgba(255, 255, 255, 0.6);
+      }
+
+      /* Mute button styling */
+      .mute-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #0a0908;
+        cursor: pointer;
+        z-index: 999;
+      }
+
+      .mute-button i {
+        transition: color 0.3s;
+      }
+
+      .mute-button i.muted {
+        color: #fa4c4c;
+      }
+    </style>
+  </head>
+
+  <body class="dark-mode vsc-initialized" data-new-gr-c-s-check-loaded="14.1196.0" data-gr-ext-installed="">
+    <audio id="backgroundAudio" loop="">
+      <source src="song.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="mute-button" id="muteButton">
+      <i class="fas fa-volume-mute muted"></i>
+    </div>
+
+    <div class="container">
+      <h1 class="mb-4 title">AlligatorPay</h1>
+      <!-- banner advertisement for AGPay Exclusive Club promo for customers with exactly $313371337 balance -->
+      <img src="https://agpay.chals.tisc24.ctf.sg/ad.gif" class="advertisement" alt="" style="width: 100%; padding-bottom: 30px">
+      <input type="file" id="fileInput" class="form-control mb-3">
+      <button class="btn btn-primary" id="parseButton">Upload Card</button>
+      <!-- Dev note: test card for agpay integration can be found at /testcard.agpay  -->
+      <div class="card-container">
+        <div class="card" id="card">
+          <img src="https://agpay.chals.tisc24.ctf.sg/albert.png" alt="Overlay Image" class="overlay-image">
+          <img src="https://agpay.chals.tisc24.ctf.sg/chip.png" alt="Overlay Image" class="overlay-chip">
+          <img src="https://agpay.chals.tisc24.ctf.sg/moostercard.png" alt="Overlay Image" class="overlay-moostercard">
+          <img src="https://agpay.chals.tisc24.ctf.sg/agpay.png" alt="Overlay Image" class="overlay-agpay">
+          <div class="card-number" id="cardNumber">0000 0000 0000 0000</div>
+          <div class="card-expiry" id="cardExpiryDate">VALID THRU 00/00</div>
+        </div>
+        <div class="balance-display" id="balance">$0.00</div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const audio = document.getElementById("backgroundAudio");
+        const muteButton = document.getElementById("muteButton");
+        const muteIcon = muteButton.querySelector("i");
+
+        // Wait for user interaction to play the audio
+        const startAudio = () => {
+          audio.play().catch(() => {
+            console.log("User has not interacted yet.");
+          });
+          document.removeEventListener("click", startAudio);
+        };
+
+        document.addEventListener("click", startAudio);
+
+        // Toggle mute/unmute on button click
+        muteButton.addEventListener("click", function () {
+          if (audio.muted) {
+            audio.muted = false;
+            muteIcon.classList.remove("muted");
+            muteIcon.classList.replace("fa-volume-mute", "fa-volume-up");
+          } else {
+            audio.muted = true;
+            muteIcon.classList.add("muted");
+            muteIcon.classList.replace("fa-volume-up", "fa-volume-mute");
+          }
+        });
+
+        document
+          .getElementById("parseButton")
+          .addEventListener("click", parseFile);
+      });
+
+      async function parseFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (!file) {
+          alert("Please select a file");
+          return;
+        }
+
+        const arrayBuffer = await file.arrayBuffer();
+        const dataView = new DataView(arrayBuffer);
+
+        const signature = getString(dataView, 0, 5);
+        if (signature !== "AGPAY") {
+          alert("Invalid Card");
+          return;
+        }
+        const version = getString(dataView, 5, 2);
+        const encryptionKey = new Uint8Array(arrayBuffer.slice(7, 39));
+        const reserved = new Uint8Array(arrayBuffer.slice(39, 49));
+
+        const footerSignature = getString(
+          dataView,
+          arrayBuffer.byteLength - 22,
+          6
+        );
+        if (footerSignature !== "ENDAGP") {
+          alert("Invalid Card");
+          return;
+        }
+        const checksum = new Uint8Array(
+          arrayBuffer.slice(arrayBuffer.byteLength - 16, arrayBuffer.byteLength)
+        );
+
+        const iv = new Uint8Array(arrayBuffer.slice(49, 65));
+        const encryptedData = new Uint8Array(
+          arrayBuffer.slice(65, arrayBuffer.byteLength - 22)
+        );
+
+        const calculatedChecksum = hexToBytes(
+          SparkMD5.ArrayBuffer.hash(new Uint8Array([...iv, ...encryptedData]))
+        );
+
+        if (!arrayEquals(calculatedChecksum, checksum)) {
+          alert("Invalid Card");
+          return;
+        }
+
+        const decryptedData = await decryptData(
+          encryptedData,
+          encryptionKey,
+          iv
+        );
+
+        const cardNumber = getString(decryptedData, 0, 16);
+        const cardExpiryDate = decryptedData.getUint32(20, false);
+        const balance = decryptedData.getBigUint64(24, false);
+
+        document.getElementById("cardNumber").textContent =
+          formatCardNumber(cardNumber);
+        document.getElementById("cardExpiryDate").textContent =
+          "VALID THRU " + formatDate(new Date(cardExpiryDate * 1000));
+        document.getElementById("balance").textContent =
+          "$" + balance.toString();
+        console.log(balance);
+        if (balance == 313371337) {
+          function arrayBufferToBase64(buffer) {
+            let binary = "";
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+          }
+
+          const base64CardData = arrayBufferToBase64(arrayBuffer);
+
+          const formData = new FormData();
+          formData.append("data", base64CardData);
+
+          try {
+            const response = await fetch("submit", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+              alert(result.success);
+            } else {
+              alert("Invalid Card");
+            }
+          } catch (error) {
+            alert("Invalid Card");
+          }
+        }
+      }
+
+      function getString(dataView, offset, length) {
+        let result = "";
+        for (let i = offset; i < offset + length; i++) {
+          result += String.fromCharCode(dataView.getUint8(i));
+        }
+        return result;
+      }
+
+      function arrayEquals(a, b) {
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+          if (a[i] !== b[i]) return false;
+        }
+        return true;
+      }
+
+      function hexToBytes(hex) {
+        const bytes = [];
+        for (let c = 0; c < hex.length; c += 2) {
+          bytes.push(parseInt(hex.substr(c, 2), 16));
+        }
+        return new Uint8Array(bytes);
+      }
+
+      async function decryptData(encryptedData, key, iv) {
+        const cryptoKey = await crypto.subtle.importKey(
+          "raw",
+          key,
+          { name: "AES-CBC" },
+          false,
+          ["decrypt"]
+        );
+        const decryptedBuffer = await crypto.subtle.decrypt(
+          { name: "AES-CBC", iv: iv },
+          cryptoKey,
+          encryptedData
+        );
+        return new DataView(decryptedBuffer);
+      }
+
+      function formatCardNumber(cardNumber) {
+        return cardNumber.replace(/(.{4})/g, "$1 ").trim();
+      }
+
+      function formatDate(date) {
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString().slice(2);
+        return `${month}/${year}`;
+      }
+    </script>
+  
+
+<gdiv class="ginger-extension-writer" style="display: none;"><gdiv class="ginger-extension-writer-frame"><iframe src="./AlligatorPay Balance Checker_files/index.html"></iframe></gdiv></gdiv></body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
